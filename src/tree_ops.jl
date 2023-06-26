@@ -93,7 +93,9 @@ end
 @inline function add_points_knn!(best_dists::AbstractVector, best_idxs::AbstractVector{Int},
                                  tree::NNTree, index::Int, point::AbstractVector,
                                  do_end::Bool, skip::F) where {F}
-    for z in get_leaf_range(tree.tree_data, index)
+    r = get_leaf_range(tree.tree_data, index)
+    add_distance!(UInt64(length(r)))
+    for z in r
         idx = tree.reordered ? z : tree.indices[z]
         dist_d = evaluate(tree.metric, tree.data[idx], point, do_end)
         if dist_d <= best_dists[1]

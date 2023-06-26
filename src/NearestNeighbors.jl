@@ -23,6 +23,16 @@ abstract type NNTree{V <: AbstractVector,P <: Metric} end
 
 const MinkowskiMetric = Union{Euclidean,Chebyshev,Cityblock,Minkowski,WeightedEuclidean,WeightedCityblock,WeightedMinkowski}
 
+NUMBER_OF_DISTANCES::UInt64 = 0
+
+@inline function clear_distances!() 
+  global NUMBER_OF_DISTANCES = UInt64(0)
+end
+
+@inline function add_distance!(k::UInt64 = UInt64(1))
+  global NUMBER_OF_DISTANCES += k
+end
+
 function check_input(::NNTree{V1}, ::AbstractVector{V2}) where {V1, V2 <: AbstractVector}
     if length(V1) != length(V2)
         throw(ArgumentError(

@@ -44,6 +44,7 @@ function knn_kernel!(tree::BruteTree{V},
                      best_idxs::AbstractVector{Int},
                      best_dists::AbstractVector,
                      skip::F) where {V, F}
+    add_distance!(UInt64(length(tree.data)))
     for i in 1:length(tree.data)
         if skip(i)
             continue
